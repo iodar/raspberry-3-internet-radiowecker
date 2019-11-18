@@ -26,7 +26,8 @@ Falls die Anleitung nicht mehr im Internet zur Verfügung steht, dann kann diese
 
 ### 3. Installation OS auf Raspberry
 
-- [Raspbian Buster Lite herunterladen](https://www.raspberrypi.org/downloads/raspbian/)
+- [Raspbian Buster Lite herunterladen (raspberrypi.org)](https://www.raspberrypi.org/downloads/raspbian/)
+  - Alternativer Download [Raspbian Buster Lite herunterladen (heise.de)](https://www.heise.de/download/product/raspbian-91329)
 - Flash Software wie z.B. [Belena Etcher herunterladen](https://www.balena.io/etcher/)
 - Raspbian Buster Lite auf SD-Karte flashen
 - Karte auswerfen
@@ -37,8 +38,10 @@ Falls die Anleitung nicht mehr im Internet zur Verfügung steht, dann kann diese
 Inhalt der Datei `wpa_supplicant.conf`
 
 ```bash
+ctrl_interface=/run/wpa_supplicant #definiert das control interface
+update_config=1 #switch der angibt, ob Konfiguration ueber 'raspi-config' geaendert werden kann
 country=DE
-network = {
+network={
     ssid="<WLANNAME>"
     psk="<WLANPASSWORD>"
 }
@@ -46,7 +49,7 @@ network = {
 
 ## TODOs
 
-- [x] Anleitung zur Monate des Gehäuses speichern
+- [x] Anleitung zur Montage des Gehäuses speichern
 - [ ] Erster Start Raspberry
 - [ ] Software die installiert werden muss
 - [ ] Werden Forks auf GitHub aufgehoben, wenn originales Repo gelöscht wird?
