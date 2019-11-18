@@ -54,3 +54,17 @@ network={
 - [ ] Software die installiert werden muss
 - [ ] Werden Forks auf GitHub aufgehoben, wenn originales Repo gelöscht wird?
 - [ ] Software im Repo speichern, wenn notwendig
+
+## Wichtige Kommandos
+
+Scannen des Wlan Netzes mit dem Interface `wlan0`
+
+```bash
+sudo iwlist wlan0 scan
+```
+
+Neukonfiguerien des Interfacesc `wlan0`
+
+```bash
+wpa_cli -i wlan0 reconfigure
+```
