@@ -43,17 +43,55 @@ update_config=1 #switch der angibt, ob Konfiguration ueber 'raspi-config' geaend
 country=DE
 network={
     ssid="<WLANNAME>"
-    psk="<WLANPASSWORD>"
+    psk="<WLANPASSWORD>" #an dieser Stelle kann auch ein encrypteter Schlüssel angegeben werden
 }
+```
+
+- In der [offiziellen Dokumentation von Raspberry Pi](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md) wird beschrieben, wie ein encrypteter Schlüssel erstellt werden kann
+
+
+### 4. Installation Stream Player Mopidy
+
+Für die Wiedergabe von Musik und Abrufen von Musik von Streamingdiensten ist die der Stream Player `Mopidy`
+erforderlich. Die Version der Anwendung in der offiziellen Paketquelle von Raspbian Buster ist bereits sehr
+alt. Daher wird empfohlen eine inoffizielle Paketquelle mit den aktuellen Versionen des Players hinzuzufügen.
+Dieser Prozess wird in den folgenden Schritten beschrieben.
+
+Signaturschlüssel für Pakequelle impotieren
+
+```bash
+curl -G https://apt.mopidy.com/mopidy.gpg | sudo apt-key add -
+```
+
+Paketquelle hinzufügen
+
+```bash
+sudo curl -G -o /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/buster.list
+```
+
+Pakete installieren
+
+```bash
+sudo apt update
+sudo apt upgrade -y #bestätigt Donwload und Installation der Pakete
+```
+
+Installation aller Abhängigkeiten
+
+```bash
+sudo apt install --no-install-recommends -y xserver-xorg xinit \
+xterm xserver-xorg-input-evdev xserver-xorg-video-fbturbo \
+lightdm gstreamer1.0-alsa python3-pip python3-pygame python3-venv \
+python3-wheel python-pip python-setuptools python-wheel \
+python-alsaaudio mopidy mopidy-tunein mopidy-podcast-itunes
 ```
 
 ## TODOs
 
 - [x] Anleitung zur Montage des Gehäuses speichern
-- [ ] Erster Start Raspberry
-- [ ] Software die installiert werden muss
-- [ ] Werden Forks auf GitHub aufgehoben, wenn originales Repo gelöscht wird?
-- [ ] Software im Repo speichern, wenn notwendig
+- [x] Erster Start Raspberry
+- [x] Installation Stream Player `Mopidy` dokumentieren
+- [ ] Installtion Treiber dokumentieren
 
 ## Wichtige Kommandos
 
