@@ -49,7 +49,6 @@ network={
 
 - In der [offiziellen Dokumentation von Raspberry Pi](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md) wird beschrieben, wie ein encrypteter Schlüssel erstellt werden kann
 
-
 ### 4. Installation Stream Player Mopidy
 
 Für die Wiedergabe von Musik und Abrufen von Musik von Streamingdiensten ist die der Stream Player `Mopidy`
@@ -85,6 +84,85 @@ lightdm gstreamer1.0-alsa python3-pip python3-pygame python3-venv \
 python3-wheel python-pip python-setuptools python-wheel \
 python-alsaaudio mopidy mopidy-tunein mopidy-podcast-itunes
 ```
+
+### 5. Installation des Treibers für das WaveShare Display
+
+```bash
+wget https://github.com/waveshare/LCD-show/archive/master.zip
+unzip master.zip
+```
+
+In das Verzeichnis des Treibers wechseln `cd LCD-show-master` und den folgenden Befehl ausführen:
+
+```bash
+sudo ./LCD-show #installiert den Treiber auf dem Raspberry und startet im Anschluss daran neu
+```
+
+Danach muss der Rapsberry so konfiguriert werden, dass der Nutzerr `pi` automatische beim Start eingeloggt wird. Dies geschieht über die Funktion `raspi-config` die per SSH auf dem Raspi gestartet werden muss. Nun muss nach der Anleitung (von Heise) die Funktion `autologin` aktiviert werden.
+
+### 6. Installation Mopidy-Plugins
+
+Installation der Weboberfläche für Mopidy und eines Lautstärkemixers
+
+```bash
+sudo pip install Mopidy-Iris Mopidy-ALSAMixer
+```
+
+Konfiguration von Mopidy, damit dieser über HTTP und MPD gesteuert werden kann
+
+```bash
+[http]
+hostname = ::
+[mpd]
+hostname = ::
+```
+
+Aktivierung des Services Mopidy
+
+```bash
+sudo systemctl enable mopidy
+```
+
+Nach einem erneuten Reboot des Raspi startet der Service `mopidy` automatisch bei Start des Systems.
+
+### 7. Installation des Touch-Interface (von Heise)
+
+Download des Master-Branch von GitHub
+
+```bash
+https://github.com/ct-Open-Source/ct-Raspi-Radiowecker/archive/master.zip
+```
+
+In der Anleitung von `c't` steht, dass das `run.sh` Skript die Rechte `660` bekommen soll, aber um das Skript ausführbar zu machen muss das Skript `770` haben.
+
+Erzeugen einer virtuellen Python-Umgebung. Vor der Erzeugung der virtuellen Umgebung muss wieder in das Home-Verzeichung gewechselt werden.
+
+```bash
+cd ~
+python3 -m venv venv
+```
+
+Danach muss wieder in das Verzeichnis mit dem Source-Code gewechselt werden. Dort wird dann die virtuellen Python-Umgebung aktiviert werden.
+
+```bash
+source venv/bin/activate
+```
+
+Installation aller Abhängigkeiten die für das Touch-Interface benötigt werden
+
+```bash
+pip install -r requirements.txt
+```
+
+Nun muss dem XServer mitgeteilt werden, welche Oberfläche gestartet werden soll, wenn der Raspi startet. Dazu muss in die Datei `.xsessionrc` im Home-Verzeichnis (~) folgende Zeile `xterm -e ~/alarm/run.sh` hinzugefügt werden. Sollte die Datei nicht existieren, dann muss sie angelegt werden.
+
+Vor dem ersten Start muss in der Konfigurationsdatei `/etc/mopidy/mopidy.conf` unter dem Abschnitt `[local]` der Eintrag `enable = true` hinzugefügt werden.
+Danach muss als mit `sudo mopidyctl local scan` die lokale Musikbibliothek eingescannt werden, damit Metadaten für den Player erzeugt werden. Anschließend muss
+Mopidy mit `sudo systemctl stop mopidy.service` gestoppt und wieder `sudo systemctl restart mopidy.service` neugestartet werden.
+
+### 8. Einrichten eines Alarms
+
+Anschließend muss eine neue Playlist mit dem Namen `Alarm` erstellt werden. Diese Playlist spielt der Wecker standardmäßig ab, wenn die Weckzeit erricht wurde.
 
 ## TODOs
 
