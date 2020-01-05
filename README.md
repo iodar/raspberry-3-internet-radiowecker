@@ -159,6 +159,8 @@ Nun muss dem XServer mitgeteilt werden, welche Oberfläche gestartet werden soll
 Vor dem ersten Start muss in der Konfigurationsdatei `/etc/mopidy/mopidy.conf` unter dem Abschnitt `[local]` der Eintrag `enable = true` hinzugefügt werden.
 Danach muss als mit `sudo mopidyctl local scan` die lokale Musikbibliothek eingescannt werden, damit Metadaten für den Player erzeugt werden. Anschließend muss
 Mopidy mit `sudo systemctl stop mopidy.service` gestoppt und wieder `sudo systemctl restart mopidy.service` neugestartet werden.
+Mopidy sollte immer durch den `systemctl` deamon oder mit `mopidyctl` gestartet werden. Wird `mopidy` als User `pi` oder `root`
+gestartet, dann wird eine andere Konfiguration geladen.
 
 ### 8. Einrichten eines Alarms
 
